@@ -16,8 +16,8 @@ module.exports =  (query) => {
             class: "",
         }
     ]
-    if (query){
-        const index = filterStatus.findIndex(item => item.status === query); 
+    if (query.status){
+        const index = filterStatus.findIndex(item => item.status === query.status); 
         filterStatus[index].class = "active";
     }else{
         const index = filterStatus.findIndex(item => item.status === ""); 
