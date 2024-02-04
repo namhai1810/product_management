@@ -1,3 +1,4 @@
+
 // Button status
 const buttonsStatus = document.querySelectorAll("[button-status]");
 
@@ -58,3 +59,58 @@ if(buttonPagination){
     })
 }
 //End pagination
+
+//check box multi
+const checkboxMulti = document.querySelector("[checkbox-multi]");
+if(checkboxMulti) {
+    const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']");
+    const inputsId = checkboxMulti.querySelectorAll("input[name='ids']");
+    inputCheckAll.addEventListener("click",() => {
+        if(inputCheckAll.checked){
+            inputsId.forEach(item => item.checked = true);
+        }else{
+            inputsId.forEach(item => item.checked = false);
+
+        }
+    });
+
+    inputsId.forEach(input => {
+        input.addEventListener("click", () =>{
+            const countChecked = checkboxMulti.querySelectorAll("input[name='ids']:checked");
+            if(countChecked.length == inputsId.length){
+                inputCheckAll.checked=true;
+            }else{
+                inputCheckAll.checked=false;
+            }
+        });
+    });
+}
+
+//End check box multi
+
+//Form change multi
+const formChangeMulti = document.querySelector("[form-change-multi]");
+if(formChangeMulti){
+    formChangeMulti.addEventListener("submit",(e) => {
+        e.preventDefault();
+        const checkboxMulti = document.querySelector("[checkbox-multi]");
+        const checkedbox = checkboxMulti.querySelectorAll("input[name='ids']:checked");
+
+        if(checkedbox.length > 0){
+            const inputIds = formChangeMulti.querySelector("input[name='ids']");
+            let ids = [];
+            checkedbox.forEach(input => {
+                ids.push(input.value);
+            });
+
+            inputIds.value = ids.join(", ");
+            formChangeMulti.submit();
+
+        }else{
+            alert("Hãy chọn 1 sản phẩm bất kì để thực hiện chức năng.")
+        }
+    });
+
+}
+
+//End Form change multi
