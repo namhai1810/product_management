@@ -89,6 +89,7 @@ module.exports.changeMulti = async (req, res) => {
             position: position
           });
         }
+        req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
 		default:
 			break;
   }
@@ -103,6 +104,6 @@ module.exports.deleteItem = async (req, res) => {
     deleted:true,
     deletedAt: new Date(),
   });
-
+  req.flash("success", "Xóa sản phẩm thành công");
   res.redirect("back");
 };
