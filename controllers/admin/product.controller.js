@@ -56,6 +56,8 @@ module.exports.changeStatus = async (req, res) => {
 };
 
 module.exports.changeMulti = async (req, res) => {
+  console.log(req.body);
+
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
   switch (type) {
@@ -64,6 +66,9 @@ module.exports.changeMulti = async (req, res) => {
       break;
     case "inactive":
       await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      break;
+    case "delete-all":
+      await Product.updateMany({ _id: { $in: ids } }, { deleted:true, deletedAt: new Date()});
       break;
 		default:
 			break;
