@@ -101,11 +101,20 @@ if(formChangeMulti){
             const isConfirm = confirm("Bạn có chắc muốn xóa sản phẩm này không?");
             if(!isConfirm) return;
         }
+
         if(checkedbox.length > 0){
             const inputIds = formChangeMulti.querySelector("input[name='ids']");
             let ids = [];
             checkedbox.forEach(input => {
-                ids.push(input.value);
+                const id = input.value;
+                if(typeChange == "change-position"){
+                    const position = input
+                    .closest("tr").
+                    querySelector("input[name='position']").value;
+                    ids.push(`${id}-${position}`)
+                }else{
+                    ids.push(id);
+                }
             });
 
             inputIds.value = ids.join(", ");
