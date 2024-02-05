@@ -33,7 +33,6 @@ if (deleteButton.length > 0) {
         const id = button.getAttribute("data-id");
         const action = path + `/${id}?_method=DELETE`;
         formDeleteStatus.action = action;
-        console
         formDeleteStatus.submit();
       }
     });
