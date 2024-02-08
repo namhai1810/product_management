@@ -3,7 +3,6 @@ const methodOverride = require('method-override');
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
-
 require("dotenv").config()
 
 const database = require("./config/database");
