@@ -52,9 +52,13 @@ if(trashButton.length > 0){
     button.addEventListener("click",() =>{
       const status = button.getAttribute("status");
       const id = button.getAttribute("data-id");
-      
+      if(status == "delete-forever"){
+        const isConfirm = confirm("Bạn có chắc muốn xóa sản phẩm này không?");
+        if(!isConfirm){
+          return;
+        }
+      }
       const action = path + `/${status}/${id}?_method=PATCH`;
-      console.log(action);
       formChangeTrash.action = action;
       formChangeTrash.submit();
 
@@ -63,3 +67,42 @@ if(trashButton.length > 0){
 }
 // End restore button and delete forever
 
+const trashChangeMulti = document.querySelector("[trash-change-multi]");
+if(trashChangeMulti){
+    trashChangeMulti.addEventListener("submit",(e) => {
+        e.preventDefault();
+        const checkboxMulti = document.querySelector("[checkbox-multi]");
+        const checkedbox = checkboxMulti.querySelectorAll("input[name='ids']:checked");
+
+        const  typeChange = e.target.elements.type.value;
+        if(typeChange=="delete-all"){
+            const isConfirm = confirm("Bạn có chắc muốn xóa sản phẩm này không?");
+            if(!isConfirm) return;
+        }
+        if(typeChange=="delete-forever"){
+          const isConfirm = confirm("Bạn có chắc muốn xóa tất cả sản phẩm này không?");
+          if(!isConfirm) return;
+      }
+        if(checkedbox.length > 0){
+            const inputIds = trashChangeMulti.querySelector("input[name='ids']");
+            let ids = [];
+            checkedbox.forEach(input => {
+                const id = input.value;
+                if(typeChange == "change-position"){
+                    const position = input
+                    .closest("tr").
+                    querySelector("input[name='position']").value;
+                    ids.push(`${id}-${position}`)
+                }else{
+                    ids.push(id);
+                }
+            });
+            inputIds.value = ids.join(", ");
+            trashChangeMulti.submit();
+
+        }else{
+            alert("Hãy chọn 1 sản phẩm bất kì để thực hiện chức năng.")
+        }
+    });
+
+}

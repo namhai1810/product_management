@@ -2,7 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/filter-status.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
-include ../../mixins/form-change-multi.pug
+include ../../mixins/trash-change-multi.pug
 include ../../mixins/alert.pug
 
 
@@ -24,7 +24,7 @@ block main
       .card-header Danh sách sản phẩm
         .row
           .col-8
-            +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+            +trash-change-multi(`${prefixAdmin}/trash/change-multi?_method=PATCH`)
           .col-4 
             a(
               href=`${prefixAdmin}/products/create`
@@ -124,5 +124,4 @@ block main
     id="form-restore-product"
     data-path=`${prefixAdmin}/trash/change-trash`
   )
-
   script(src="/admin/js/trash.js")

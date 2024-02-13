@@ -1,8 +1,8 @@
-mixin form-change-multi(path)
+mixin trash-change-multi(path)
     form(
       action=path
       method="POST"
-      form-change-multi
+      trash-change-multi
     )
       .d-flex.align-items-start 
         .form-group
@@ -11,6 +11,9 @@ mixin form-change-multi(path)
             option(value="inactive") Dừng hoạt động
             option(value="delete-all") Xóa tất cả 
             option(value="change-position") Thay đổi vị trí 
+            option(value="restore") Khôi phục sản phẩm 
+            option(value="delete-forever") Xóa vĩnh viễn sản phẩm
+
 
 
         .form-group

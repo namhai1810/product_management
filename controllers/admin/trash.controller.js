@@ -59,3 +59,53 @@ module.exports.changeStatus = async (req, res) =>{
   res.redirect("back");
 
 }
+
+// [PATCH] /admin/trash/change-multi?_method=PATCH
+module.exports.changeMulti = async (req, res) => {
+  const type = req.body.type;
+  const ids = req.body.ids.split(", ");
+  switch (type) {
+    case "active":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
+
+      break;
+    case "inactive":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
+      break;
+    case "delete-all":
+      await Product.updateMany(
+        { _id: { $in: ids } }, 
+        { deleted:true,
+          deletedAt: new Date()
+        });
+      req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
+
+      break;
+    case "change-position":
+        for(const item of ids){
+          let [id, position] = item.split("-");
+          position = parseInt(position);
+          await Product.updateOne({_id : id}, {
+            position: position
+          });
+        }
+        req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
+    case "restore":
+      await Product.updateMany(
+        { _id: { $in: ids } }, 
+        { deleted:false,
+          deletedAt: new Date()
+        });
+      req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
+      break;
+    case "delete-forever":
+        await Product.deleteMany({ _id: { $in: ids } });
+        req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
+        break;
+    default:
+			break;
+  }
+  res.redirect("back");
+};
