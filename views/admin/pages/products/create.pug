@@ -75,7 +75,11 @@ block main
         upload-image-preview
         class = "image-preview"
       )
-
+      button(
+        type="button"
+        class="btn btn-danger btn-sm d-none"
+        upload-image-remove
+      ) Xóa
     div(class="form-group")
       label(for="position") Vị trí
       input(

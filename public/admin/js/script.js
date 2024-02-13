@@ -145,14 +145,21 @@ const uploadImage = document.querySelector("[upload-image]");
 if (uploadImage) {
   const imageInput = document.querySelector("[upload-image-input]");
   const imagePreview = document.querySelector("[upload-image-preview]");
-	
+	const buttonPreview = document.querySelector("[upload-image-remove]");
+
 	imageInput.addEventListener("change", (e) => {
 		const file = e.target.files[0];
-		console.log(file);
 		if(file){
-			console.log( URL.createObjectURL(file));
 			imagePreview.src = URL.createObjectURL(file);
+			buttonPreview.classList.remove("d-none");
 		}
+	});
+
+	buttonPreview.addEventListener("click", () =>{
+		imageInput.value = "";
+		imagePreview.src = "";
+		buttonPreview.classList.add("d-none");
+
 	});
 }
 //End upload preview img
