@@ -96,12 +96,14 @@ block main
                     button(
                       class="btn btn-warning btn-sm" 
                       data-id=item.id 
-                      button-restore
+                      button-trash
+                      status="restore"
                     ) Khôi phục
                     button(
                       class="btn btn-danger btn-sm ml-1" 
                       data-id=item.id 
-                      button-delete
+                      button-trash
+                      status="delete-forever"
                     ) Xóa vĩnh viễn
   +pagination(pagination)
   form(
@@ -116,11 +118,11 @@ block main
     id="form-delete-status"
     data-path=`${prefixAdmin}/products/delete`
     ) 
-  //- form(
-  //-   action=""
-  //-   method="POST"
-  //-   id="form-restore-product"
-  //-   data-path=`${prefixAdmin}/trash/restore`
-  //- )
+  form(
+    action=""
+    method="POST"
+    id="form-restore-product"
+    data-path=`${prefixAdmin}/trash/change-trash`
+  )
 
   script(src="/admin/js/trash.js")

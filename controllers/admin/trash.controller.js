@@ -44,5 +44,18 @@ module.exports.index = async (req,res) => {
     keyword: objectSearch.keyword,
     pagination: objectPagination,
   });
-  
 } 
+// [patch] admin/trash/:status/:id
+module.exports.changeStatus = async (req, res) =>{
+  const status = req.params.status;
+  const id = req.params.id;
+  if(status === "restore"){
+    await Product.updateOne({_id:id}, {deleted:false});
+  }else{
+    await Product.deleteOne({_id:id});
+  }
+  req.flash("success", `Cập nhập trạng thái của sản phẩm thành công`);
+
+  res.redirect("back");
+
+}

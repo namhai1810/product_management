@@ -41,3 +41,25 @@ if (deleteButton.length > 0) {
 
 //End Delete button
 
+// Restore button and delete forever
+
+const trashButton = document.querySelectorAll("[button-trash]");
+if(trashButton.length > 0){
+  const formChangeTrash = document.querySelector("#form-restore-product");
+  const path = formChangeTrash.getAttribute("data-path");
+
+  trashButton.forEach(button => {
+    button.addEventListener("click",() =>{
+      const status = button.getAttribute("status");
+      const id = button.getAttribute("data-id");
+      
+      const action = path + `/${status}/${id}?_method=PATCH`;
+      console.log(action);
+      formChangeTrash.action = action;
+      formChangeTrash.submit();
+
+    });
+  })
+}
+// End restore button and delete forever
+
