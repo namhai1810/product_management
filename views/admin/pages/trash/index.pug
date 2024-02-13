@@ -48,7 +48,6 @@ block main
               th Vị trí
               th Trạng thái
               th Hành động
-
           tbody
               each item, index in products
                 tr
@@ -93,13 +92,17 @@ block main
                         button-changeStatus
                         class="badge badge-danger"
                         ) Dừng hoạt động
-                  td
-                    button(class="btn btn-warning btn-sm") Sửa
+                  td 
+                    button(
+                      class="btn btn-warning btn-sm" 
+                      data-id=item.id 
+                      button-restore
+                    ) Khôi phục
                     button(
                       class="btn btn-danger btn-sm ml-1" 
                       data-id=item.id 
                       button-delete
-                    ) Xóa
+                    ) Xóa vĩnh viễn
   +pagination(pagination)
   form(
     action=""
@@ -113,6 +116,11 @@ block main
     id="form-delete-status"
     data-path=`${prefixAdmin}/products/delete`
     ) 
+  //- form(
+  //-   action=""
+  //-   method="POST"
+  //-   id="form-restore-product"
+  //-   data-path=`${prefixAdmin}/trash/restore`
+  //- )
 
-
-  //- script(src="/admin/js/product.js")
+  script(src="/admin/js/trash.js")
