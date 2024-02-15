@@ -20,8 +20,8 @@ app.use(methodOverride('_method'));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static("public"));
-app.set("views","./views");
+app.set("views", `${__dirname}/views`);
+app.use(express.static(`${__dirname}/public`));
 app.set("view engine","pug");
 
 //flash
@@ -30,6 +30,7 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 //end flash
 
+console.log(__dirname);
 // app local variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
