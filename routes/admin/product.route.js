@@ -18,6 +18,16 @@ router.post(
   upload.single("thumbnail"),
   validate.createPost,
   validate.decription,
-  controller.createPost);
+  controller.createPost
+);
+
+router.get("/edit/:id", controller.edit);
+router.patch(
+  "/edit/:id",
+  upload.single("thumbnail"),
+  validate.createPost,
+  validate.decription,
+  controller.editPatch
+);
   
 module.exports = router;
