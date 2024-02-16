@@ -13,7 +13,7 @@ module.exports.index = async (req, res) => {
   if (req.query.status) {
     find.status = req.query.status;
   }
-
+  
   const objectSearch = searchHelper(req.query);
   if (objectSearch.regex) {
     find.title = objectSearch.regex;
@@ -31,9 +31,16 @@ module.exports.index = async (req, res) => {
     countProducts
   );
   //end pagination
-
+  //sort
+  sort = {}
+  if(req.query.sortKey && req.query.sortValue){
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else{
+    sort["position"] = "desc";
+  }
+  //end sort
   const products = await Product.find(find)
-    .sort({position: "desc"})
+    .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
 
