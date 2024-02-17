@@ -5,6 +5,8 @@ block main
   if(product.title)
     h1(class="mb-4") #{product.title}
 
+  if(product.description)
+    div(class="mb-4") Mô tả: <b>!{product.description}</b>
   if (product.price)
     div(class="mb-4") Giá: <b>#{product.price}$</b>
 
