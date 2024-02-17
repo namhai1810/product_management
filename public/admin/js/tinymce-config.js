@@ -1,5 +1,5 @@
 tinymce.init({
-  selector: 'textarea.textarea-mce',
+  selector: 'textarea[textarea-mce]',
   plugins: "image",
 
 });
