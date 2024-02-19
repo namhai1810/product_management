@@ -1,10 +1,10 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 block main
   +alert-success("5000")
   +alert-error("5000")
-
-  h1(class="mb-4") Chỉnh sửa sản phẩm
+  h1(class="mb-4") Chỉnh sửa danh mục sản phẩm
 
   form(
     action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
@@ -22,6 +22,15 @@ block main
         required
         value=record.title
       )
+    div(class="form-group")
+      label(for="parent_id") Danh mục cha
+      select(
+        class="form-control"
+        id="parent_id"
+        name="parent_id"
+      )
+        option(value="") -- Chọn danh mục cha --
+        +select-tree(data, 1 ,parentId=record.parent_id)
     div(class="form-group")
       label(for="desc") Mô tả
       textarea(

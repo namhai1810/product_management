@@ -53,10 +53,15 @@ module.exports.edit = async (req, res) =>{
       deleted: false,
       _id: req.params.id,
     }
+
     const record = await ProductCategory.findOne(find);
+
+    const data = await ProductCategory.find({deleted: "false"});
+    const newData = createTreeHelpers.tree(data);
     res.render("admin/pages/products-category/edit",{
       pageTitle: "Chỉnh sửa sản phẩm",
-      record: record
+      record: record,
+      data: newData 
     })
 
   }
@@ -71,23 +76,19 @@ module.exports.edit = async (req, res) =>{
 // [PATCH] /admin/products-category/edit/:id
 module.exports.editPatch = async (req, res) =>{
 
-  if(req.body.position == ""){
-    const countRecords = await ProductCategory.countDocuments();
-    req.body.position = countRecords + 1;
-  }else{
-    req.body.position = parseInt(req.body.position);
-  }
-
   try{
     await ProductCategory.updateOne({
       _id: req.params.id,
       deleted:false 
     }, req.body);
+
   }catch(error){
-    req.flash("error", "Chỉnh sửa không thành công!");
+    req.flash("error", "Sản phẩm không tồn tại!");
     res.redirect(`back`);
     return;
   }
+  req.flash("success", "Chỉnh sửa sản phẩm thành công!");
+
   res.redirect(`${systemConfig.prefixAdmin}/products-category/`);
 
 }
