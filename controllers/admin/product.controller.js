@@ -159,9 +159,14 @@ module.exports.edit = async (req, res) => {
     }
     const product  = await Product.findOne(find);
 
+    const records = await ProductCategory.find({
+      deleted:false,
+    })
+    const newRecords = createTreeHelpers.tree(records);
     res.render("admin/pages/products/edit",{
       pageTitle: "Chỉnh sửa sản phẩm",
-      product: product
+      product: product,
+      records: records,
     })
   }
   catch (err) {
