@@ -57,3 +57,16 @@ module.exports.editPatch = async (req,res) => {
   req.flash("success", "Cập nhập nhóm quyền thành công");
   res.redirect("back");
 } 
+
+// [GET] /admin/roles/permissions
+module.exports.permissions = async (req,res) => {
+  let find = {
+    deleted: false,
+  };
+  const records = await Roles.find(find);
+
+  res.render("admin/pages/roles/permissions", {
+      pageTitle: "Phân quyền",
+      records: records
+  });
+} 
