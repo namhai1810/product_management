@@ -1,0 +1,20 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  if(record.title)
+    h1(class="mb-4") #{record.title}
+
+  if(record.description)
+    div(class="mb-4") Mô tả danh mục: #{record.description}
+
+  if(record.permissions)
+    div(class="mb-4") Các quyền của danh mục:
+    each item in record.permissions
+      li #{item}
+
+
+  a(
+    href=`${prefixAdmin}/roles/edit/${record.id}`
+    class="btn btn-warning"
+  ) Chỉnh sửa

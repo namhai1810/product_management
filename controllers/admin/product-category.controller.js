@@ -103,7 +103,7 @@ module.exports.detail = async (req, res) => {
       record.parent = await ProductCategory.findOne(parent);
     }
     res.render("admin/pages/products-category/detail", {
-      pageTitle: "Chi tiết danh mục sản phẩm",
+      pageTitle: record.title,
       record: record,
     });
   } catch (err) {

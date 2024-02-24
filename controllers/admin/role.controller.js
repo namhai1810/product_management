@@ -85,3 +85,22 @@ module.exports.permissionsPatch = async (req,res) => {
   }
   res.redirect("back");
 } 
+// [GET] /admin/roles/detail/:id
+module.exports.detail = async (req,res) => {
+  try{
+    let find = {
+      _id: req.params.id,
+      deleted: false,
+    }
+    const record = await Roles.findOne(find);
+    console.log(record.permissions);
+    res.render("admin/pages/roles/detail", {
+      pageTitle: record.title,
+      record: record
+    });
+  }
+  catch(err){
+    res.redirect(`${systemConfig.prefixAdmin}/roles`);
+  }
+
+} 
