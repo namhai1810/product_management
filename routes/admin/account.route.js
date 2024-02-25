@@ -14,7 +14,7 @@ router.get("/", controller.index);
 router.get("/create", controller.create);
 router.post(
   "/create",
-  upload.single("thumbnail"),
+  upload.single("avatar"),
   uploadCloud.upload,
   validate.createPost,
   controller.createPost
