@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
 const cookieParser = require("cookie-parser");
+const moment = require('moment');
 const session = require("express-session");
 
 require("dotenv").config()
@@ -37,6 +38,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 // app local variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
 
 // routes
 routeAdmin(app);
