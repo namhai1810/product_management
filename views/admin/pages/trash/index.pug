@@ -4,7 +4,7 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/trash-change-multi.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/formatDateTime.pug
 
 
 block main
@@ -47,6 +47,7 @@ block main
               th Giá
               th Vị trí
               th Trạng thái
+              th Người xóa
               th Hành động
           tbody
               each item, index in products
@@ -92,6 +93,10 @@ block main
                         button-changeStatus
                         class="badge badge-danger"
                         ) Dừng hoạt động
+                  td
+                    p #{item.accountFullName}
+                    +formatTime(item.deletedBy.deletedAt)
+
                   td 
                     button(
                       class="btn btn-warning btn-sm" 

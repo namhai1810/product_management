@@ -3,6 +3,7 @@ const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination.js");
 const systemConfig = require("../../config/system");
+const Account = require("../../models/account.model")
 // [GET] /admin/trash
 module.exports.index = async (req,res) => {
   const filterStatus = filterStatusHelper(req.query);
@@ -36,7 +37,14 @@ module.exports.index = async (req,res) => {
     .sort({position: "desc"})
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
-
+  
+  for(const product of products){
+    const account = await Account.findOne({_id: product.deletedBy.account_id});
+    if(account){
+      product.accountFullName = account.fullName;
+    }
+  }
+  
   res.render("admin/pages/trash/index", {
     pageTitle: "Danh sách sản phẩm đã xóa",
     products: products,
@@ -78,7 +86,10 @@ module.exports.changeMulti = async (req, res) => {
       await Product.updateMany(
         { _id: { $in: ids } }, 
         { deleted:true,
-          deletedAt: new Date()
+          deletedBy:{
+            account_id: res.locals.user.id,
+            deletedAt: Date.now(),
+          },
         });
       req.flash("success", `Cập nhập trạng thái của ${ids.length} sản phẩm thành công`);
 
