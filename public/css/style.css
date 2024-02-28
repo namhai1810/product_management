@@ -57,6 +57,7 @@
   width: 100%;
   aspect-ratio: 4/3;
   border-bottom: 1px solid #ddd;
+  position: relative;
 }
 
 .product-item .inner-image img {
@@ -237,3 +238,15 @@
   cursor: pointer;
 }
 /* End Show Alert */
+
+.product-item .inner-featured{
+  position: absolute;
+  top: 0;
+  right:0;
+  background: green;
+  color: white;
+  padding: 3px 6px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+}
