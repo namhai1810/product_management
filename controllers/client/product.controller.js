@@ -2,33 +2,29 @@
 const Products = require("../../models/product.model");
 const ProductsCategory = require("../../models/product-category.model");
 const ProductsCategoryHelpers = require("../../helpers/productCategory");
+const productHelpers = require("../../helpers/product")
+// [GET] /
 module.exports.index = async (req, res) => {
-  const products = await Product.find({
+  const products = await Products.find({
     status: "active",
     deleted: "false",
   });
-  const newProducts = products.map((item) => {
-    item.priceNew = (
-      (item.price * (100 - item.discountPercentage)) /
-      100
-    ).toFixed(0);
-    return item;
-  });
+  const newProducts = productHelpers.priceNewProducts(products);
 
   res.render("clients/pages/products/index", {
     pageTitle: "Danh sach san pham",
     products: newProducts,
   });
 };
-// [GET] /products/:slugCategory
 
+// [GET] /products/:slugCategory
 module.exports.category = async (req, res) => {
   const slugCategory = req.params.slugCategory;
   const category = await ProductsCategory.findOne({
     slug: slugCategory,
     status: "active",
     deleted: false,
-  }).sort({ position: "desc" });
+  });
 
   const listSubCategory = await ProductsCategoryHelpers.getSubCategory(category._id);
   const listSubCategoryId = listSubCategory.map((item) => item.id);
@@ -42,4 +38,33 @@ module.exports.category = async (req, res) => {
     pageTitle: category.title,
     products: products
   });
+};
+
+// [GET] /products/detail/:slugProduct
+module.exports.detail = async (req, res) => {
+  try{
+    const slugProduct = req.params.slugProduct;
+    const product = await Products.findOne({
+      slug: slugProduct,
+      status: "active",
+      deleted: false,
+    });
+    if(product.product_category_id){
+      const category = await ProductsCategory.findOne({
+        _id: product.product_category_id,
+        status: "active",
+        deleted: false,
+      });
+      product.category = category;
+    }
+    product.priceNew = productHelpers.priceNewProduct(product);
+
+    res.render("clients/pages/products/detail", {
+      pageTitle: product.title,
+      product: product
+    });
+  }
+  catch (err) {
+    res.redirect("/products");
+  }
 };
