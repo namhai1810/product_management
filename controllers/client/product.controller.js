@@ -1,5 +1,7 @@
 // [GET] /products
-const Product = require("../../models/product.model");
+const Products = require("../../models/product.model");
+const ProductsCategory = require("../../models/product-category.model");
+const ProductsCategoryHelpers = require("../../helpers/productCategory");
 module.exports.index = async (req, res) => {
   const products = await Product.find({
     status: "active",
@@ -18,22 +20,26 @@ module.exports.index = async (req, res) => {
     products: newProducts,
   });
 };
-// [GET] /products/:slug
+// [GET] /products/:slugCategory
 
-module.exports.detail = async (req, res) => {
-  try {
-    const find = {
-      deleted: false,
-      slug: req.params.slug,
-    };
-    const product = await Product.findOne(find);
-    res.render("clients/pages/products/detail", {
-      pageTitle: product.title,
-      product: product,
-    });
-  } catch (err) {
-    req.flash("error", "Sản phẩm không tồn tại!");
-    res.redirect(`/products/`);
-    return;
-  }
+module.exports.category = async (req, res) => {
+  const slugCategory = req.params.slugCategory;
+  const category = await ProductsCategory.findOne({
+    slug: slugCategory,
+    status: "active",
+    deleted: false,
+  }).sort({ position: "desc" });
+
+  const listSubCategory = await ProductsCategoryHelpers.getSubCategory(category._id);
+  const listSubCategoryId = listSubCategory.map((item) => item.id);
+  const products = await Products.find({
+    product_category_id: {$in: [category.id,...listSubCategoryId]},
+    deleted:false,
+    status: "active",
+  });
+
+  res.render("clients/pages/products/index", {
+    pageTitle: category.title,
+    products: products
+  });
 };
