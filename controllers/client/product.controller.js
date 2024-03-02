@@ -10,7 +10,6 @@ module.exports.index = async (req, res) => {
     deleted: "false",
   });
   const newProducts = productHelpers.priceNewProducts(products);
-
   res.render("clients/pages/products/index", {
     pageTitle: "Danh sach san pham",
     products: newProducts,
@@ -33,10 +32,11 @@ module.exports.category = async (req, res) => {
     deleted:false,
     status: "active",
   });
+  const newProducts = productHelpers.priceNewProducts(products);
 
   res.render("clients/pages/products/index", {
     pageTitle: category.title,
-    products: products
+    products: newProducts
   });
 };
 

@@ -16,13 +16,14 @@ module.exports.index = async (req, res) => {
   //kết thúc lấy ra sản phẩm nổi bật
 
   // Hiển thị danh sách sản phâm mới nhất
-  const newProductsNew = await Product.find({
+  const newProducts = await Product.find({
     status: "active",
     deleted:false,
   }).sort({position: "desc"}).limit(6);
 
   // Hết hiển thị danh sách sản phâm mới nhất
-
+  // console.log(newProductsNew)
+  const newProductsNew = productHelpers.priceNewProducts(newProducts);
   res.render("clients/pages/home/index", {
     pageTitle: "Trang chủ",
     productsFeatured: newProductsFeatured,
