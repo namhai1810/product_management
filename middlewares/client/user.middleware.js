@@ -4,7 +4,6 @@ module.exports.infoUser = async (req, res, next) => {
     const user = await User.findOne({
       tokenUser: req.cookies.tokenUser,
     }).select("-password");
-    console.log(user);
     if(user){
       res.locals.user = user
     }
