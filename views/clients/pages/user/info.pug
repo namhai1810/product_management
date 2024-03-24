@@ -1,0 +1,20 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+    .row
+      .col-12
+        +box-head("Thông tin tài khoản")
+
+        .card
+          .card-body
+            .row
+              .col-md-6
+                .form-group
+                  label(for='fullName') Full Name:
+                  input#fullName.form-control(type='text', value=user.fullName, readonly)
+              .col-md-6
+                .form-group
+                  label(for='email') Email:
+                  input#email.form-control(type='email', value=user.email, readonly)
