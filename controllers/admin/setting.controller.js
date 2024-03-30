@@ -13,7 +13,6 @@ module.exports.general = async (req, res) => {
 module.exports.generalPatch = async (req, res) => {
   const settingsGeneral = await SettingGeneral.findOne({});
   if (settingsGeneral) {
-    console.log(req.body);
     await SettingGeneral.updateOne({}, req.body);
   } else {
     const record = new SettingGeneral(req.body);
