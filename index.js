@@ -4,6 +4,8 @@ const methodOverride = require('method-override');
 const cookieParser = require("cookie-parser");
 const moment = require('moment');
 const session = require("express-session");
+const http = require('http');
+const { Server } = require("socket.io");
 
 require("dotenv").config()
 
@@ -25,6 +27,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.set("views", `${__dirname}/views`);
 app.use(express.static(`${__dirname}/public`));
 app.set("view engine","pug");
+
+//Socket io
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) =>{
+    console.log("user connected", socket.id);
+})
+// End socket.io
 
 //flash
 app.use(cookieParser('qwertyuiop'));
@@ -49,6 +60,7 @@ app.get("*", (req, res) => {
     });
 });
 
-app.listen(port, () =>{
+// server là có nhưng thêm socketio vào app
+server.listen(port, () =>{
     console.log(`listening on ${port}`);
 });
