@@ -31,10 +31,7 @@ app.set("view engine","pug");
 //Socket io
 const server = http.createServer(app);
 const io = new Server(server);
-
-io.on("connection", (socket) =>{
-    console.log("user connected", socket.id);
-})
+global._io = io
 // End socket.io
 
 //flash

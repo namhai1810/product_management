@@ -1,6 +1,9 @@
 // [GET] /chat/
 module.exports.index = (req, res) => {
-  res.render("clients/pages/chat/index",{
-    pageTitle:"Chat",
-  })
-}
+  _io.on("connection", (socket) => {
+    console.log("user connected", socket.id);
+  });
+  res.render("clients/pages/chat/index", {
+    pageTitle: "Chat",
+  });
+};
