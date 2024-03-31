@@ -91,7 +91,8 @@ module.exports.forgotPassword = (req, res) => {
 // [POST] user/forgotPassword
 module.exports.forgotPasswordPost = async (req, res) => {
   const email = req.body.email;
-  const user = User.findOne({
+  console.log("EMAIL", email);
+  const user = await User.findOne({
     email: email,
     deleted: false,
   });
@@ -100,7 +101,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
     res.redirect("back");
     return;
   }
-
+  console.log(user)
   // Việc 1: tạo mã otp và tạo collections để lưu nó OTP và email (forgot-password)
   const otp = generateHelper.generateRandomNumber(8);
   const objectForgotPassword = {
@@ -133,6 +134,7 @@ module.exports.otpPassword = (req, res) => {
 module.exports.otpPasswordPost = async (req, res) => {
   const email = req.body.email;
   const otp = req.body.otp;
+
   const record = await ForgotPassword.findOne({
     email: email,
     otp: otp,

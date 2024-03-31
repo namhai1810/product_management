@@ -23,7 +23,7 @@ router.post(
 
 router.get("/password/otp", controller.otpPassword);
 
-router.post("/password/otp", controller.otpPasswordPost);
+router.post("/password/otp", validate.forgotPassword,controller.otpPasswordPost);
 
 router.get("/password/reset", controller.resetPassword);
 
