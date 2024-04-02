@@ -1,9 +1,12 @@
 import * as Popper from "https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js";
 
-const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-images", {
-  multiple: true,
-  maxFileCount: 6,
-});
+const upload = new FileUploadWithPreview.FileUploadWithPreview(
+  "upload-images",
+  {
+    multiple: true,
+    maxFileCount: 6,
+  }
+);
 
 const formDataSocket = document.querySelector(".chat .inner-form");
 if (formDataSocket) {
@@ -63,6 +66,10 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   `;
   body.appendChild(div);
   bodyChat.scrollTop = bodyChat.scrollHeight;
+  const chatBody = document.querySelector(".inner-body");
+  if (chatBody) {
+    const gallery = new Viewer(chatBody);
+  }
 });
 // END SERVER_RETURN_MESSAGE
 
@@ -94,3 +101,11 @@ emojiPicker.addEventListener("emoji-click", (event) => {
 // End Insert icon to input field
 
 // File upload preview
+
+// ZOOM IMAGE
+const chatBody = document.querySelector(".chat .inner-body");
+if (chatBody) {
+  const gallery = new Viewer(chatBody);
+}
+
+// END ZOOM IMAGE
