@@ -1,4 +1,9 @@
-import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
+import * as Popper from "https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js";
+
+const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-image", {
+  multiple: true,
+  maxFileCount: 6,
+});
 
 const formDataSocket = document.querySelector(".chat .inner-form");
 if (formDataSocket) {
@@ -6,9 +11,14 @@ if (formDataSocket) {
   formDataSocket.addEventListener("submit", (e) => {
     e.preventDefault();
     const content = contentMessage.value;
-    if (content) {
-      socket.emit("CLIENT_SEND_MESSAGE", content);
+    const images = upload.cachedFileArray || [];
+    if (content || images.length > 0) {
+      socket.emit("CLIENT_SEND_MESSAGE", {
+        content: content,
+        images: images,
+      });
       contentMessage.value = "";
+      upload.resetPreviewPanel();
     }
   });
 }
@@ -18,7 +28,11 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   const myId = document.querySelector("[my-id]").getAttribute("my-id");
   const body = document.querySelector(".chat .inner-body");
   const div = document.createElement("div");
+
   let htmlFullName = "";
+  let htmlContent = "";
+  let htmlImages = "";
+
   if (myId == data.userId) {
     div.classList.add("inner-outgoing");
   } else {
@@ -26,13 +40,29 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
 
     htmlFullName = `<div class="inner-name">${data.fullName}</div>`;
   }
+  if (data.content) {
+    htmlContent = `<div class="inner-content">${data.content}</div>`;
+  }
+
+  if (data.images.length > 0) {
+    htmlImages += `<div class="inner-images">`;
+
+    for (const image of data.images) {
+      htmlImages += `
+        <img src="${image}">
+      `;
+    }
+
+    htmlImages += `</div>`;
+  }
   div.innerHTML = `
     ${htmlFullName}
-    <div class="inner-content">${data.content}</div>
+    ${htmlContent}
+    ${htmlImages}
+
   `;
   body.appendChild(div);
   bodyChat.scrollTop = bodyChat.scrollHeight;
-
 });
 // END SERVER_RETURN_MESSAGE
 
@@ -45,22 +75,22 @@ if (bodyChat) {
 
 // show Icon typing
 const buttonIcon = document.querySelector(".button-icon");
-if(buttonIcon) {
-  const tooltip = document.querySelector('.tooltip')
-  Popper.createPopper(buttonIcon, tooltip)
+if (buttonIcon) {
+  const tooltip = document.querySelector(".tooltip");
+  Popper.createPopper(buttonIcon, tooltip);
   buttonIcon.addEventListener("click", () => {
-    tooltip.classList.toggle('shown')
-  })
+    tooltip.classList.toggle("shown");
+  });
 }
 //End  show Icon typing
 
 // Insert icon to input field
-const emojiPicker = document.querySelector('emoji-picker')
+const emojiPicker = document.querySelector("emoji-picker");
 const inputChat = document.querySelector("input[name='content']");
 emojiPicker.addEventListener("emoji-click", (event) => {
   const icon = event.detail.unicode;
-  console.log(icon);
   inputChat.value = inputChat.value + icon;
-})
+});
 // End Insert icon to input field
 
+// File upload preview

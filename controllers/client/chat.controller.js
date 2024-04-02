@@ -1,5 +1,8 @@
 const Chat = require("../../models/chat.model");
 const User = require("../../models/user.model");
+const uploadToCloudinary = require("../../helpers/uploadToCloudinary")
+
+
 // [GET] /chat/
 module.exports.index = async (req, res) => {
   const userId = res.locals.user.id;
@@ -13,17 +16,26 @@ module.exports.index = async (req, res) => {
     // so we will receive multiple messages
     // if we use socket.once, it registers an event listener
     // that will be triggered only once for the specified event
-    socket.on("CLIENT_SEND_MESSAGE", async (message) => {
+    socket.on("CLIENT_SEND_MESSAGE", async (data) => {
+      let images = [];
+
+      for(const imageBuffer of data.images) {
+        const link = await uploadToCloudinary(imageBuffer);
+        images.push(link);
+      }
+
       const chat = new Chat({
         user_id: res.locals.user.id,
-        content: message,
+        content: data.content,
+        images: images,
       });
       await chat.save();
       // Trả data cho clients
       _io.emit("SERVER_RETURN_MESSAGE", {
         userId: userId,
         fullName: fullName,
-        content: message,
+        content: data.content,
+        images: images,
       });
       //
     });
