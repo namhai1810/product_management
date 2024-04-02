@@ -1,6 +1,6 @@
 import * as Popper from "https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js";
 
-const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-image", {
+const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-images", {
   multiple: true,
   maxFileCount: 6,
 });
