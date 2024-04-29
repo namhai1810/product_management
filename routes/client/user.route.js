@@ -31,5 +31,4 @@ router.post("/password/reset",validate.resetPasswordPost, controller.resetPasswo
 
 router.get("/info",authMiddleware.requireAuth, controller.info);
 
-
 module.exports = router;
