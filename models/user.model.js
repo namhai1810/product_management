@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema(
     },
     phone: String,
     avatar: String,
-    friendList: [
+    friendsList: [
       {
         user_id:String,
         room_chat_id: String

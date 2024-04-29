@@ -30,6 +30,7 @@ if(listBtnCancelFriend.length >0) {
 
 // Kết thúc chức năng hủy yêu cầu kết bạn
 
+// Từ chối kb
 const listBtnRefuseFriend = document.querySelectorAll('[btn-refuse-friend]');
 if(listBtnRefuseFriend.length > 0) {
   listBtnRefuseFriend.forEach(btn => {
@@ -37,6 +38,21 @@ if(listBtnRefuseFriend.length > 0) {
       const userId = btn.getAttribute('btn-refuse-friend');
       btn.closest(".box-user").classList.add("refuse");
       socket.emit("CLIENT_REFUSE_FRIEND", userId);
+    })
+  });
+
+}
+// Từ chối kb
+
+// Đồng ý kb
+
+const listBtnAcceptFriend = document.querySelectorAll('[btn-accept-friend]');
+if(listBtnAcceptFriend.length > 0) {
+  listBtnAcceptFriend.forEach(btn => {
+    btn.addEventListener("click", () =>{
+      const userId = btn.getAttribute('btn-accept-friend');
+      btn.closest(".box-user").classList.add("accepted");
+      socket.emit("CLIENT_ACCEPT_FRIEND", userId);
     })
   });
 
