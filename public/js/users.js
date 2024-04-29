@@ -30,3 +30,14 @@ if(listBtnCancelFriend.length >0) {
 
 // Kết thúc chức năng hủy yêu cầu kết bạn
 
+const listBtnRefuseFriend = document.querySelectorAll('[btn-refuse-friend]');
+if(listBtnRefuseFriend.length > 0) {
+  listBtnRefuseFriend.forEach(btn => {
+    btn.addEventListener("click", () =>{
+      const userId = btn.getAttribute('btn-refuse-friend');
+      btn.closest(".box-user").classList.add("refuse");
+      socket.emit("CLIENT_REFUSE_FRIEND", userId);
+    })
+  });
+
+}
