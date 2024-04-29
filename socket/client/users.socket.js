@@ -34,5 +34,25 @@ module.exports = async (res) => {
       }
 
     });
+
+    socket.on("CLIENT_CANCEL_FRIEND", async (userId) => {
+      const myUserId = res.locals.user.id; //Id ông A
+      // Xoá id của A vào accept friends của B
+      await Users.updateOne({
+        _id: userId,
+      }, {
+        $pull: {
+          acceptFriends: myUserId,
+        }
+      })
+      // Thêm id của B vào request friends của B
+      await Users.updateOne({
+        _id: myUserId,
+      }, {
+        $pull: {
+          requestFriends: userId,
+        }
+      })
+    });
   });
 };
