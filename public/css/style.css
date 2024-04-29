@@ -419,9 +419,9 @@
   margin-bottom: 3px;
 }
 
-/* .box-user [btn-cancel-friend] {
+.box-user [btn-cancel-friend] {
   display: none;
-} */
+}
 
 .box-user.add [btn-add-friend] {
   display: none;
