@@ -38,6 +38,14 @@ module.exports = async (res) => {
           }
         );
       }
+      // Lấy độ dài accept friends của B trả lại cho B
+      const infoUserB = await Users.findOne({ _id: userId });
+      const lengthAcceptFriends = infoUserB.acceptFriends.length;
+
+      socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+        userId: userId,
+        lengthAcceptFriends: lengthAcceptFriends,
+      });
     });
 
     socket.on("CLIENT_CANCEL_FRIEND", async (userId) => {
@@ -154,9 +162,6 @@ module.exports = async (res) => {
         );
       }
       // Thêm id của A vào friend của B
-      
-
     });
-
   });
 };
