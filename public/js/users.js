@@ -69,13 +69,14 @@ socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
   const dataUserAccept = document.querySelector(
     `[data-users-accept="${data.userId}"]`
   );
-  const userId = dataUserAccept.getAttribute("data-users-accept");
   if (dataUserAccept) {
-    // vẽ thêm giao diện
-    const newBoxUser = document.createElement("div");
-    newBoxUser.classList.add("col-6");
-    newBoxUser.setAttribute("user-id", data.infoUserA._id);
-    newBoxUser.innerHTML = `
+    const userId = dataUserAccept.getAttribute("data-users-accept");
+    if (dataUserAccept) {
+      // vẽ thêm giao diện
+      const newBoxUser = document.createElement("div");
+      newBoxUser.classList.add("col-6");
+      newBoxUser.setAttribute("user-id", data.infoUserA._id);
+      newBoxUser.innerHTML = `
       <div class="box-user">
         <div class="inner-avatar">
           <img src="https://robohash.org/hicveldicta.png" alt="${data.infoUserA.fullName}" />
@@ -115,28 +116,39 @@ socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
         </div>
       </div>
     `;
-    dataUserAccept.appendChild(newBoxUser);
-    //Hết vẽ thêm giao diện
+      dataUserAccept.appendChild(newBoxUser);
+      //Hết vẽ thêm giao diện
 
-    const buttonRefuse = newBoxUser.querySelector("[btn-refuse-friend]");
-    buttonRefuse.addEventListener("click", () => {
-      buttonRefuse.closest(".box-user").classList.add("refuse");
+      const buttonRefuse = newBoxUser.querySelector("[btn-refuse-friend]");
+      buttonRefuse.addEventListener("click", () => {
+        buttonRefuse.closest(".box-user").classList.add("refuse");
 
-      const userId = buttonRefuse.getAttribute("btn-refuse-friend");
+        const userId = buttonRefuse.getAttribute("btn-refuse-friend");
 
-      socket.emit("CLIENT_REFUSE_FRIEND", userId);
-    });
-    // Hết Xóa lời mời kết bạn
+        socket.emit("CLIENT_REFUSE_FRIEND", userId);
+      });
+      // Hết Xóa lời mời kết bạn
 
-    // Chấp nhận lời mời kết bạn
-    const buttonAccept = newBoxUser.querySelector("[btn-accept-friend]");
-    buttonAccept.addEventListener("click", () => {
-      buttonAccept.closest(".box-user").classList.add("accepted");
+      // Chấp nhận lời mời kết bạn
+      const buttonAccept = newBoxUser.querySelector("[btn-accept-friend]");
+      buttonAccept.addEventListener("click", () => {
+        buttonAccept.closest(".box-user").classList.add("accepted");
 
-      const userId = buttonAccept.getAttribute("btn-accept-friend");
+        const userId = buttonAccept.getAttribute("btn-accept-friend");
 
-      socket.emit("CLIENT_ACCEPT_FRIEND", userId);
-    });
+        socket.emit("CLIENT_ACCEPT_FRIEND", userId);
+      });
+    }
+  }
+  const dataUsersNotFriends = document.querySelector("[data-users-not-friend]");
+  if(dataUsersNotFriends){
+    const userId = dataUsersNotFriends.getAttribute("data-users-not-friend");
+    if (userId == data.userId) {
+      const boxUser = dataUsersNotFriends.querySelector(`[user-id="${data.infoUserA._id}"]`);
+      if (boxUser) {
+        dataUsersNotFriends.removeChild(boxUser);
+      }
+    }
   }
 });
 
@@ -145,9 +157,9 @@ socket.on("SERVER_RETURN_USER_ID_CANCEL_FRIEND", (data) => {
   const dataUserAccept = document.querySelector(
     `[data-users-accept="${data.userId}"]`
   );
-  if(dataUserAccept){
+  if (dataUserAccept) {
     const boxUser = dataUserAccept.querySelector(`[user-id="${data.userIdA}"]`);
-    if(boxUser){
+    if (boxUser) {
       dataUserAccept.removeChild(boxUser);
     }
   }

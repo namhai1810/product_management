@@ -14,7 +14,6 @@ module.exports.notFriend = async (req, res) => {
     const requestFriends = myUser.requestFriends;
     const acceptFriends = myUser.acceptFriends;
     const friendsList = myUser.friendsList.map(item => item.user_id);
-
     const users = await User.find({
       $and: [
         {_id: {$ne: userId}},
